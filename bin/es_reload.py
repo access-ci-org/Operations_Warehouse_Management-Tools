@@ -80,7 +80,7 @@ class Router():
             self.pidfile_path = '/var/run/{}/{}.pid'.format(name, name)
             
     # Setup AFTER we know that no other self is running
-    def Setup(self, peek_sleep=10, offpeek_sleep=60, max_stale=24 * 60):
+    def Setup(self, peak_sleep=10, offpeak_sleep=60, max_stale=24 * 60):
         # Initialize log level from arguments, or config file, or default to WARNING
         loglevel_str = (self.args.log or self.config.get('LOG_LEVEL', 'WARNING')).upper()
         loglevel_num = getattr(logging, loglevel_str, None)
