@@ -12,7 +12,7 @@ export PYTHONPATH=$DAEMON_DIR/lib:/soft/warehouse-1.0/PROD/django_xsede_warehous
 export DJANGO_CONF=/soft/warehouse-apps-1.0/tools/conf/django_xsede_warehouse.conf
 export DJANGO_SETTINGS_MODULE=xsede_warehouse.settings
 
-$MY_BASE/PROD/bin/es_reload.py -c $MY_BASE/conf/es_reload.conf $@
+$MY_BASE/PROD/bin/es_reload.py -c $MY_BASE/conf/es_reload.conf "$@"
 RETVAL=$?
 echo rc=$RETVAL
 exit $RETVAL

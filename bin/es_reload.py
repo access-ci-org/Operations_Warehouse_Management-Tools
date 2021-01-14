@@ -51,6 +51,12 @@ class Router():
                             help='Logging level (default=warning)')
         parser.add_argument('-c', '--config', action='store', dest='config', required=True, \
                             help='Configuration file')
+        parser.add_argument('-g', '--group', action='store', dest='group', \
+                            help='Resource Group')
+        parser.add_argument('-t', '--type', action='store', dest='type', \
+                            help='Resource Type')
+        parser.add_argument('-a', '--affiliation', action='store', dest='affiliation', \
+                            help='Resource Affiliation')
         parser.add_argument('--pdb', action='store_true', \
                             help='Run with Python debugger')
         self.args = parser.parse_args()
@@ -115,11 +121,32 @@ class Router():
             hosts = self.config['ELASTIC_HOSTS'], \
             connection_class = RequestsHttpConnection, \
             timeout = 10)
-        self.logger.info('Deleting and re-initializing Elasticsearch ResourceV3Index')
-        elasticsearch_dsl.Index(ResourceV3Index.Index.name).delete(ignore=404)
-        ResourceV3Index.init()              # Initialize it if it doesn't exist
 
         self.WAREHOUSE_CATALOG = 'ResourceV3'
+        
+        self.want = []
+        if self.args.group:
+            self.want_group = set(self.args.group.split(','))
+            self.want.append('group')
+            self.logger.info('Selected group(s)={}'.format(','.join(self.want_group)))
+        if self.args.type:
+            self.want_type = set(self.args.type.split(','))
+            self.want.append('type')
+            self.logger.info('Selected types(s)={}'.format(','.join(self.want_type)))
+        if self.args.affiliation:
+            self.want_affiliation = set(self.args.affiliation.split(','))
+            self.want.append('affiliation')
+            self.logger.info('Selected affiliation(s)={}'.format(','.join(self.want_affiliation)))
+        if not self.want:   # If nothing selected, we are rebuilding the entire index
+            self.want.append('all')
+            self.logger.info('Selected ALL resources')
+            self.logger.info('Deleting and reloading entire Elasticsearch ResourceV3Index')
+            elasticsearch_dsl.Index(ResourceV3Index.Index.name).delete(ignore=404)
+
+        # Initialize it in case we deleted it or it never existed
+        ResourceV3Index.init()
+
+        self.total = 0
 
     def exit_signal(self, signum, frame):
         self.logger.critical('Caught signal={}({}), exiting with rc={}'.format(signum, signal.Signals(signum).name, signum))
@@ -134,18 +161,39 @@ class Router():
 
     def Run(self):
         loop_start_utc = datetime.now(timezone.utc)
+        
         allRELATIONS = {}
         for rel in ResourceV3Relation.objects.all():
             if rel.FirstResourceID not in allRELATIONS:
                 allRELATIONS[rel.FirstResourceID] = {}
             allRELATIONS[rel.FirstResourceID][rel.SecondResourceID] = rel.RelationType
-        for item in ResourceV3.objects.all():
+        
+        # Initial querie
+        if self.want[0] == 'all':
+            objects = ResourceV3.objects.all()
+        elif self.want[0] == 'group':
+            objects = ResourceV3.objects.filter(ResourceGroup__in=self.want_group)
+        elif self.want[0] == 'type':
+            objects = ResourceV3.objects.filter(Type__in=self.want_type)
+        elif self.want[0] == 'affiliation':
+            objects = ResourceV3.objects.filter(Affiliation__in=self.want_affiliation)
+        # Additional queries
+        for q in self.want[1:]:
+            if q == 'group':
+                objects = objects.filter(ResourceGroup__in=self.want_group)
+            elif q == 'type':
+                objects = objects.filter(Type__in=self.want_type)
+            elif q == 'affiliation':
+                objects = objects.filter(Affiliation__in=self.want_affiliation)
+
+        for item in objects:
             myNEWRELATIONS = allRELATIONS.get(item.ID, {})
 #            myNEWRELATIONS = {}
 #            for rel in ResourceV3Relation.objects.filter(FirstResourceID=item.ID):
 #                myNEWRELATIONS[rel.SecondResourceID] = rel.RelationType
             item.indexing(myNEWRELATIONS)
-        self.logger.info('Index reload duration={:.3f}/seconds'.format((datetime.now(timezone.utc) - loop_start_utc).total_seconds()))
+            self.total += 1
+        self.logger.info('Index reload count={} duration={:.3f}/seconds'.format(self.total, (datetime.now(timezone.utc) - loop_start_utc).total_seconds()))
         return(0)
 
 ########## CUSTOMIZATIONS END ##########
