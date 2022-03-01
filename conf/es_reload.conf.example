@@ -2,6 +2,6 @@
     "DEBUG": true,
     "ELASTIC_HOSTS": ["localhost:9200"],
     "LOG_LEVEL": "info",
-    "LOG_FILE": "/soft/warehouse-apps-1.0/tools/var/es_reload.log",
-    "PID_FILE": "/soft/warehouse-apps-1.0/tools/var/es_reload.pid"
+    "LOG_FILE": "/soft/warehouse-apps-1.0/Management-Tools/var/es_reload.log",
+    "PID_FILE": "/soft/warehouse-apps-1.0/Management-Tools/var/es_reload.pid"
 }
