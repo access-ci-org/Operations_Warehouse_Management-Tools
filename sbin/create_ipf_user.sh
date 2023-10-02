@@ -7,4 +7,4 @@ sudo rabbitmqctl add_user "$input" foo
 
 sudo rabbitmqctl list_user_permissions "$input"
 
-sudo rabbitmqctl set_permissions -p xsede "$input" "^amq.gen.*" "^amq.gen.*|^glue2.*" "^amq.gen.*|^glue2.*"
+sudo rabbitmqctl set_permissions -p infopub "$input" "^amq.gen.*" "^amq.gen.*|^glue2.*" "^amq.gen.*|^glue2.*"
