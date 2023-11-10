@@ -1,18 +1,22 @@
 #!/bin/bash
 
 ### RePublish Tool
-MY_BASE=/soft/warehouse-apps-1.0/Management-Tools
+APP_HOME=%APP_HOME%
 
-PYTHON=python3
-PYTHON_BASE=/soft/python/python-3.7.7-base
-PYTHON_ROOT=/soft/warehouse-apps-1.0/Management-Tools/python
-source ${PYTHON_ROOT}/bin/activate
+# Override in shell environment
+if [ -z "$PYTHON_BASE" ]; then
+    PYTHON_BASE=%PYTHON_BASE%
+fi
 
-export PYTHONPATH=$DAEMON_DIR/lib:/soft/warehouse-1.0/PROD/django_xsede_warehouse
-export DJANGO_CONF=/soft/warehouse-apps-1.0/Management-Tools/conf/django_xsede_warehouse.conf
-export DJANGO_SETTINGS_MODULE=xsede_warehouse.settings
+PYTHON_BIN=python3
+export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
+source ${APP_HOME}/python/bin/activate
 
-$MY_BASE/PROD/bin/repub.py -c $MY_BASE/conf/repub.conf -r dummy.test.xsede.org -i $@
+export PYTHONPATH=${APP_HOME}/PROS/lib:${WAREHOUSE_DJANGO}
+export DJANGO_CONF=${APP_HOME}/conf/django_prod_router.conf
+export DJANGO_SETTINGS_MODULE=Operations_Warehouse_Django.settinge
+
+${PYTHON_BIN} ${APP_HOME}/PROD/bin/repub.py -c ${APP_HOME}/conf/repub.conf -r dummy.test.access-ci.org -i $@
 RETVAL=$?
 echo rc=$RETVAL
 exit $RETVAL
