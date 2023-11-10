@@ -1,3 +1,6 @@
+v1.0.2-20231110 JP
+  - Fix a bunch of sbin/* file problems
+
 v1.0.1-20231110 JP
   - Enable backup crontab
 

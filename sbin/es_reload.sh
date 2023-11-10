@@ -3,6 +3,7 @@
 ###
 # Run %APP_NAME%: OpenSearch reload
 ###
+
 APP_NAME=es_reload
 APP_HOME=%APP_HOME%
 
