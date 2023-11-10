@@ -1,18 +1,31 @@
 #!/bin/bash
 
-### RePublish Tool
-MY_BASE=/soft/warehouse-apps-1.0/Management-Tools
+###
+# Run %APP_NAME%: OpenSearch reload
+###
+APP_NAME=es_reload
+APP_HOME=%APP_HOME%
 
-PYTHON=python3
-PYTHON_BASE=/soft/python/python-3.7.7-base
-PYTHON_ROOT=/soft/warehouse-apps-1.0/Management-Tools/python
-source ${PYTHON_ROOT}/bin/activate
+# Override in shell environment
+if [ -z "$PYTHON_BASE" ]; then
+    PYTHON_BASE=%PYTHON_BASE%
+fi
 
-export PYTHONPATH=$DAEMON_DIR/lib:/soft/warehouse-1.0/PROD/django_xsede_warehouse
-export DJANGO_CONF=/soft/warehouse-apps-1.0/Management-Tools/conf/django_xsede_warehouse.conf
-export DJANGO_SETTINGS_MODULE=xsede_warehouse.settings
+####### Everything else should be standard #######
+APP_SOURCE=${APP_HOME}/PROD
+APP_BIN=${APP_SOURCE}/bin/${APP_NAME}.py
+APP_OPTS="-c ${APP_HOME}/conf/${APP_NAME}.conf"
 
-$MY_BASE/PROD/bin/es_reload.py -c $MY_BASE/conf/es_reload.conf "$@"
+PYTHON_BIN=python3
+export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
+source ${APP_HOME}/python/bin/activate
+
+export PYTHONPATH=${APP_SOURCE}/lib:${WAREHOUSE_DJANGO}
+export APP_CONFIG=${APP_HOME}/conf/django_prod_router.conf
+export DJANGO_SETTINGS_MODULE=Operations_Warehouse_Django.settings
+
+echo "Starting: ${PYTHON_BIN} ${APP_BIN} $@ ${APP_OPTS}"
+${PYTHON_BIN} ${APP_BIN} $@ ${APP_OPTS}
 RETVAL=$?
 echo rc=$RETVAL
 exit $RETVAL

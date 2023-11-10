@@ -1,3 +1,9 @@
+v1.0.0-20231110 JP
+  - Fork of https://github.com/access-ci-org/Operations_Router_Management-Tools
+  - Rename since these tools are for managing the warehouse and not routers per-se
+  - Primarily cleaning up the wareouse backup tool
+  - TODO: review/convert bin/es_reload.py
+
 tag-0.8-20241101 JP
   - Backup the development Service Index database also
 

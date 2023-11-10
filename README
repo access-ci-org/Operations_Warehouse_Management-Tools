@@ -1,4 +1,1 @@
-Scripts to manage AMIE queues and users have been removed from this package.
-In ACCESS-CI, AMIE no longer uses rabbitmq queues.
-The scripts can still be found in the original XSEDE repository at
-https://github.com/XSEDE/Discovery_Management-Tools
+Tools for managing the Information Sharing Platform Warehouse
