@@ -1,0 +1,1 @@
+0 41 * * * /bin/bash -l -c /soft/warehouse-apps-1.0/Management-Tools/PROD/sbin/serviceindex_backup.sh
