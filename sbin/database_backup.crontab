@@ -1,1 +1,1 @@
-0 21 * * * /bin/bash -l -c /soft/warehouse-apps-1.0/management-tools/PROD/sbin/database_backup.sh
+0 21 * * * /bin/bash -l -c /soft/applications-2.0/management-tools/PROD/sbin/database_backup.sh
