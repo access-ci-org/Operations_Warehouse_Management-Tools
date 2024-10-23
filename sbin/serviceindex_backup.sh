@@ -35,6 +35,7 @@ pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} \
     -t serviceindex.availability -t serviceindex.site -t serviceindex.staff -t serviceindex.support \
     -t serviceindex.service -t serviceindex.host -t serviceindex.link -t serviceindex.logentry \
     -t serviceindex.event -t serviceindex.hosteventlog -t serviceindex.hosteventstatus \
+    -t serviceindex.misc_urls \
   >${BACKUP_DIR}/django.dump.${DATE}
 
 #pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} \
