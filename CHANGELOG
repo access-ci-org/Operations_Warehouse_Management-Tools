@@ -1,3 +1,7 @@
+v1.0.3-20241101 JP
+  - Backup the development Service Index database also
+  - Backup the development Warehouse database also
+
 v1.0.2-20231110 JP
   - Fix a bunch of sbin/* file problems
 

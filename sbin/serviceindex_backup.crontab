@@ -1,0 +1,1 @@
+0 41 * * * /bin/bash -l -c /soft/applications-2.0/management-tools/PROD/sbin/serviceindex_backup.sh
