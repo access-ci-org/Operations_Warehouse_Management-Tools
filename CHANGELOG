@@ -1,3 +1,6 @@
+tag-0.8-20241101 JP
+  - Backup the development Service Index database also
+
 tag-0.7-20241023 JP
   - Add model serviceindex.misc_urls to backup script
 

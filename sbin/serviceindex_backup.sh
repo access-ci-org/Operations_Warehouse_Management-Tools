@@ -1,14 +1,20 @@
 #!/bin/bash
 
 ###
-# Run warehouse_management: Database backup
+# Run warehouse_management: Service Index databases backup
 ###
 
 APP_NAME=service-index
 APP_HOME=/soft/applications-2.0/warehouse_management
-DBNAME=serviceindex1
-DBHOST=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
-DBUSER=serviceindex_django
+
+DBNAME1=serviceindex1
+DBHOST1=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
+DBUSER1=serviceindex_django
+
+DBNAME2=serviceindex2
+DBHOST2=${DBHOST1}
+DBUSER2=${DBUSER1}
+
 S3DIR=s3://backup.operations.access-ci.org/service-index.operations.access-ci.org/rds.backup/
 
 # Override in shell environment
@@ -30,28 +36,25 @@ echo Starting at `date`
 
 DATE=`date +'%s'`
 
-# Using OS installed PostgreSQL tools
-pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} \
+DUMPNAME=django.${DBNAME1}.dump.${DATE}
+pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -d ${DBNAME1} \
     -t serviceindex.availability -t serviceindex.site -t serviceindex.staff -t serviceindex.support \
     -t serviceindex.service -t serviceindex.host -t serviceindex.link -t serviceindex.logentry \
     -t serviceindex.event -t serviceindex.hosteventlog -t serviceindex.hosteventstatus \
     -t serviceindex.misc_urls \
-  >${BACKUP_DIR}/django.dump.${DATE}
+  >${BACKUP_DIR}/${DUMPNAME}
+gzip -9 ${BACKUP_DIR}/${DUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
-#pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} \
-#  >${BACKUP_DIR}/django.dump.${DATE}
-# Minimum backup without history for development environments
-#pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} --exclude-table=public.glue2_entityhistory --exclude-table=public.warehouse_state_processingerror \
-#  >${BACKUP_DIR}/django.mindump.${DATE}
-
-#zip all dumps to save disk
-gzip -9 ${BACKUP_DIR}/django.dump.${DATE}
-#gzip -9 ${BACKUP_DIR}/django.mindump.${DATE}
-
-aws s3 cp ${BACKUP_DIR}/django.dump.${DATE}.gz ${S3DIR} --only-show-errors --profile newbackup
-#aws s3 cp ${BACKUP_DIR}/django.mindump.${DATE}.gz ${S3DIR} --only-show-errors --profile newbackup
-
-#aws s3 ls s3://xci.xsede.org/info.xsede.org/rds.backup/\*.${DATE} --profile newbackup
+DUMPNAME=django.${DBNAME2}.dump.${DATE}
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -d ${DBNAME2} \
+    -t serviceindex.availability -t serviceindex.site -t serviceindex.staff -t serviceindex.support \
+    -t serviceindex.service -t serviceindex.host -t serviceindex.link -t serviceindex.logentry \
+    -t serviceindex.event -t serviceindex.hosteventlog -t serviceindex.hosteventstatus \
+    -t serviceindex.misc_urls \
+  >${BACKUP_DIR}/${DUMPNAME}
+gzip -9 ${BACKUP_DIR}/${DUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 #Cleanup backups older than 2 days
 #find ${BACKUP_DIR} -mtime +2 -name \*dump\* -exec rm {} \;
