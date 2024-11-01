@@ -1,3 +1,6 @@
+v1.0.4-20241101 JP
+  - Exclude resource_v4 objects from backups
+
 v1.0.3-20241101 JP
   - Backup the development Service Index database also
   - Backup the development Warehouse database also

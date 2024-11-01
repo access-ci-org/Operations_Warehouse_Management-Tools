@@ -38,15 +38,47 @@ DATE=`date +'%s'`
 
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -d ${DBNAME1} \
+  --exclude-table=public.resource_v4_resourcev4 \
+  --exclude-table=public.resource_v4_resourcev4local \
+  --exclude-table=public.resource_v4_resourcev4relation \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
+# Minimum backup without history for development environments
+MINDUMPNAME=django.${DBNAME1}.mindump.${DATE}
+pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -d ${DBNAME1} \
+  --exclude-table=public.resource_v4_resourcev4 \
+  --exclude-table=public.resource_v4_resourcev4local \
+  --exclude-table=public.resource_v4_resourcev4relation \
+  --exclude-table=public.glue2_entityhistory \
+  --exclude-table=public.warehouse_state_processingerror \
+  >${BACKUP_DIR}/${MINDUMPNAME}
+gzip -9 ${BACKUP_DIR}/${MINDUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
+
+###
+
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -d ${DBNAME2} \
+  --exclude-table=public.resource_v4_resourcev4 \
+  --exclude-table=public.resource_v4_resourcev4local \
+  --exclude-table=public.resource_v4_resourcev4relation \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
+
+# Minimum backup without history for development environments
+MINDUMPNAME=django.${DBNAME2}.mindump.${DATE}
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -d ${DBNAME2} \
+  --exclude-table=public.resource_v4_resourcev4 \
+  --exclude-table=public.resource_v4_resourcev4local \
+  --exclude-table=public.resource_v4_resourcev4relation \
+  --exclude-table=public.glue2_entityhistory \
+  --exclude-table=public.warehouse_state_processingerror \
+  >${BACKUP_DIR}/${MINDUMPNAME}
+gzip -9 ${BACKUP_DIR}/${MINDUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 #aws s3 ls s3://xci.xsede.org/info.xsede.org/rds.backup/\*.${DATE} --profile newbackup
 
