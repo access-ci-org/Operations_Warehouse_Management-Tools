@@ -6,9 +6,15 @@
 
 APP_NAME=database_backup
 APP_HOME=/soft/applications-2.0/warehouse_management
-DBNAME=warehouse2
-DBHOST=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
-DBUSER=info_django
+
+DBNAME1=warehouse2
+DBHOST1=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
+DBUSER1=info_django
+
+DBNAME2=warehouse3
+DBHOST2=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
+DBUSER2=info_django
+
 S3DIR=s3://backup.operations.access-ci.org/operations-api.access-ci.org/rds.backup/
 
 # Override in shell environment
@@ -30,19 +36,17 @@ echo Starting at `date`
 
 DATE=`date +'%s'`
 
-# Using OS installed PostgreSQL tools
-pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} \
-  >${BACKUP_DIR}/django.dump.${DATE}
-# Minimum backup without history for development environments
-pg_dump -h ${DBHOST} -U ${DBUSER} -n public -d ${DBNAME} --exclude-table=public.glue2_entityhistory --exclude-table=public.warehouse_state_processingerror \
-  >${BACKUP_DIR}/django.mindump.${DATE}
+DUMPNAME=django.${DBNAME1}.dump.${DATE}
+pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -d ${DBNAME1} \
+  >${BACKUP_DIR}/${DUMPNAME}
+gzip -9 ${BACKUP_DIR}/${DUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
-#zip all dumps to save disk
-gzip -9 ${BACKUP_DIR}/django.dump.${DATE}
-gzip -9 ${BACKUP_DIR}/django.mindump.${DATE}
-
-aws s3 cp ${BACKUP_DIR}/django.dump.${DATE}.gz ${S3DIR} --only-show-errors --profile newbackup
-aws s3 cp ${BACKUP_DIR}/django.mindump.${DATE}.gz ${S3DIR} --only-show-errors --profile newbackup
+DUMPNAME=django.${DBNAME2}.dump.${DATE}
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -d ${DBNAME2} \
+  >${BACKUP_DIR}/${DUMPNAME}
+gzip -9 ${BACKUP_DIR}/${DUMPNAME}
+aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 #aws s3 ls s3://xci.xsede.org/info.xsede.org/rds.backup/\*.${DATE} --profile newbackup
 
