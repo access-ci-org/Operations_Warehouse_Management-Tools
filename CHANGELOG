@@ -1,3 +1,9 @@
+v1.1.0-20250420 JP
+  - Add warehouse_stg backups
+
+v1.0.5-20241101 JP
+  - Adjust warehouse3 backup schemas
+
 v1.0.4-20241101 JP
   - Exclude resource_v4 objects from backups
 
