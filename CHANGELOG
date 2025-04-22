@@ -1,3 +1,4 @@
+
 v1.1.0-20250420 JP
   - Add warehouse_stg backups
 
@@ -22,6 +23,12 @@ v1.0.0-20231110 JP
   - Rename since these tools are for managing the warehouse and not routers per-se
   - Primarily cleaning up the wareouse backup tool
   - TODO: review/convert bin/es_reload.py
+
+tag-0.8-20241101 JP
+  - Backup the development Service Index database also
+
+tag-0.7-20241023 JP
+  - Add model serviceindex.misc_urls to backup script
 
 tag-0.6-20220301 JP
   - Implement sbin/database_backup*

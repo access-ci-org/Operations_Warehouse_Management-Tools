@@ -98,6 +98,7 @@ gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 # Minimum backup without history for development environments
+
 MINDUMPNAME=django.${DBNAME3}.mindump.${DATE}
 pg_dump -h ${DBHOST3} -U ${DBUSER3} -n info_django -n info -d ${DBNAME3} \
   --exclude-table=info_django.resource_v4_resourcev4 \
