@@ -35,7 +35,7 @@ source ${APP_HOME}/python/bin/activate
 BACKUP_DIR=${APP_HOME}/backups/
 [ ! -d ${BACKUP_DIR} ] && mkdir ${BACKUP_DIR}
 
-exec 1>> ${BACKUP_DIR}/${APP_NAME}.log
+exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1
 echo Starting at `date`
 
 DATE=`date +'%s'`
@@ -119,11 +119,11 @@ find ${BACKUP_DIR} -mtime +2 -name \*dump\* -exec rm {} \;
 let maxage=60*60*24*7
 aws s3 ls ${S3DIR} --profile newbackup | awk '{print $4}' | while read filename
 do
-    echo "${filename}"
     fileepoch="$(cut -d'.' -f3 <<<"${filename}")"
     if [ -n "${fileepoch}" ] && [ "${fileepoch}" -eq "${fileepoch}" ] 2>/dev/null; then
         let fileage=${DATE}-${fileepoch}
         if [ "${fileage}" -gt "${maxage}" ]; then
+            echo "s3 rm ${S3DIR}/${filename}"
             aws s3 rm ${S3DIR}/${filename} --profile newbackup
         fi
     fi
