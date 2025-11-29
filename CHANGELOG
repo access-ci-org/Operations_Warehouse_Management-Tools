@@ -1,3 +1,5 @@
+v1.2.0-20251129 JP
+  - Improve database backup logging
 
 v1.1.0-20250420 JP
   - Add warehouse_stg backups
