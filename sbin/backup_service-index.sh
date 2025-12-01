@@ -28,7 +28,7 @@ PYTHON_BIN=python3
 export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
 source ${APP_HOME}/python/bin/activate
 
-BACKUP_DIR=${APP_HOME}/backups/{$APP_NAME}
+BACKUP_DIR=${APP_HOME}/backups/${APP_NAME}
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR}
 
 exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1
