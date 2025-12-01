@@ -1,1 +1,0 @@
-0 21 * * * /bin/bash -l -c %APP_HOME%/sbin/database_backup.sh
