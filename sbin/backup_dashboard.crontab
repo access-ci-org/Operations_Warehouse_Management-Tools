@@ -1,0 +1,1 @@
+20 0 * * * /bin/bash -l -c %APP_HOME%/sbin/backup_dashboard.sh
