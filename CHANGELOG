@@ -1,3 +1,6 @@
+v1.3.3-20251201 JP
+  - Fix dashboard backup schemas
+
 v1.3.2-20251201 JP
   - Fix BACKUP_DIR variable definition
 

@@ -37,21 +37,13 @@ echo Starting at `date`
 DATE=`date +'%s'`
 
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
-pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -d ${DBNAME1} \
-    -t serviceindex.availability -t serviceindex.site -t serviceindex.staff -t serviceindex.support \
-    -t serviceindex.service -t serviceindex.host -t serviceindex.link -t serviceindex.logentry \
-    -t serviceindex.event -t serviceindex.hosteventlog -t serviceindex.hosteventstatus \
-    -t serviceindex.misc_urls \
+pg_dump -h ${DBHOST1} -U ${DBUSER1} -n dashboard -d ${DBNAME1} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
-pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -d ${DBNAME2} \
-    -t serviceindex.availability -t serviceindex.site -t serviceindex.staff -t serviceindex.support \
-    -t serviceindex.service -t serviceindex.host -t serviceindex.link -t serviceindex.logentry \
-    -t serviceindex.event -t serviceindex.hosteventlog -t serviceindex.hosteventstatus \
-    -t serviceindex.misc_urls \
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n dashboard -d ${DBNAME2} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
