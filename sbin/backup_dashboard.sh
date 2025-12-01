@@ -1,21 +1,21 @@
 #!/bin/bash
 
 ###
-# Run warehouse_management: Service Index databases backup
+# Run %APP_NAME%:: Dashboard databases backup
 ###
 
-APP_NAME=service-index
+APP_NAME=dashboard
 APP_HOME=/soft/applications-2.0/warehouse_management
 
-DBNAME1=serviceindex1
+DBNAME1=dashboard1
 DBHOST1=opsdb-dev.cluster-clabf5kcvwmz.us-east-2.rds.amazonaws.com
-DBUSER1=serviceindex_django
+DBUSER1=dashboard_django
 
-DBNAME2=serviceindex2
+DBNAME2=dashboard_beta
 DBHOST2=${DBHOST1}
 DBUSER2=${DBUSER1}
 
-S3DIR=s3://backup.operations.access-ci.org/service-index.operations.access-ci.org/rds.backup/
+S3DIR=s3://backup.operations.access-ci.org/dashboard.operations.access-ci.org/rds.backup/
 
 # Override in shell environment
 if [ -z "$PYTHON_BASE" ]; then
@@ -28,7 +28,7 @@ PYTHON_BIN=python3
 export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
 source ${APP_HOME}/python/bin/activate
 
-BACKUP_DIR=${APP_HOME}/backups/serviceindex/
+BACKUP_DIR=${APP_HOME}/backups/{$APP_NAME}
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR}
 
 exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1

@@ -1,3 +1,6 @@
+v1.3.1-20251201 JP
+  - Fix new dashboard backups
+
 v1.3.0-20251201 JP
   - Fix, refactor, and/or create PostgreSQL backups for all our applications
 
