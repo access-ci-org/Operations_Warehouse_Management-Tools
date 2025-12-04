@@ -38,7 +38,6 @@ DATE=`date +'%s'`
 
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n public -n serviceindex -d ${DBNAME1} \
-
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup

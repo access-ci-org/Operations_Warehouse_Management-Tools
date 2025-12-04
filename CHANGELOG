@@ -1,3 +1,6 @@
+v1.3.5-20251204 JP
+  - Fix service-index backup typo
+  
 v1.3.4-20251204 JP
   - Fix service-index backup to include both public and privage schema
 
