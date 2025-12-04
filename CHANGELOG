@@ -1,3 +1,6 @@
+v1.3.4-20251204 JP
+  - Fix service-index backup to include both public and privage schema
+
 v1.3.3-20251201 JP
   - Fix dashboard backup schemas
 
