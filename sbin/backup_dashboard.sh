@@ -37,13 +37,13 @@ echo Starting at `date`
 DATE=`date +'%s'`
 
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
-pg_dump -h ${DBHOST1} -U ${DBUSER1} -n dashboard -d ${DBNAME1} \
+pg_dump -h ${DBHOST1} -U ${DBUSER1} -n dashboard_django -d ${DBNAME1} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
-pg_dump -h ${DBHOST2} -U ${DBUSER2} -n dashboard -d ${DBNAME2} \
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n dashboard_django -d ${DBNAME2} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
@@ -55,7 +55,6 @@ find ${BACKUP_DIR} -mtime +2 -name \*dump\* -exec rm {} \;
 let maxage=60*60*24*7
 aws s3 ls ${S3DIR} --profile newbackup | awk '{print $4}' | while read filename
 do
-    echo "${filename}"
     fileepoch="$(cut -d'.' -f3 <<<"${filename}")"
     if [ -n "${fileepoch}" ] && [ "${fileepoch}" -eq "${fileepoch}" ] 2>/dev/null; then
         let fileage=${DATE}-${fileepoch}

@@ -1,3 +1,9 @@
+v1.4.0-20251205 JP
+  - dashboard schema changed to dashboard_django
+
+v1.3.6-20251204 JP
+  - Change to dashboard
+
 v1.3.5-20251204 JP
   - Fix service-index backup typo
   
