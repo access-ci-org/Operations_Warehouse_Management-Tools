@@ -54,11 +54,11 @@ aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile new
 # Minimum backup without history for development environments
 MINDUMPNAME=django.${DBNAME1}.mindump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n info_django -d ${DBNAME1} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
-  --exclude-table=info_django.glue2_entityhistory \
-  --exclude-table=info_django.warehouse_state_processingerror \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.glue2_entityhistory \
+  --exclude-table-data=info_django.warehouse_state_processingerror \
   >${BACKUP_DIR}/${MINDUMPNAME}
 gzip -9 ${BACKUP_DIR}/${MINDUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
@@ -67,9 +67,11 @@ aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile 
 
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n info_django -n info -d ${DBNAME2} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.glue2_entityhistory \
+  --exclude-table-data=info_django.warehouse_state_processingerror \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
@@ -77,11 +79,11 @@ aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile new
 # Minimum backup without history for development environments
 MINDUMPNAME=django.${DBNAME2}.mindump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n info_django -n info -d ${DBNAME2} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
-  --exclude-table=info_django.glue2_entityhistory \
-  --exclude-table=info_django.warehouse_state_processingerror \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.glue2_entityhistory \
+  --exclude-table-data=info_django.warehouse_state_processingerror \
   >${BACKUP_DIR}/${MINDUMPNAME}
 gzip -9 ${BACKUP_DIR}/${MINDUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
@@ -90,9 +92,11 @@ aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile 
 
 DUMPNAME=django.${DBNAME3}.dump.${DATE}
 pg_dump -h ${DBHOST3} -U ${DBUSER3} -n info_django -n info -d ${DBNAME3} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.glue2_entityhistory \
+  --exclude-table-data=info_django.warehouse_state_processingerror \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
@@ -101,11 +105,11 @@ aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile new
 
 MINDUMPNAME=django.${DBNAME3}.mindump.${DATE}
 pg_dump -h ${DBHOST3} -U ${DBUSER3} -n info_django -n info -d ${DBNAME3} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
-  --exclude-table=info_django.glue2_entityhistory \
-  --exclude-table=info_django.warehouse_state_processingerror \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.glue2_entityhistory \
+  --exclude-table-data=info_django.warehouse_state_processingerror \
   >${BACKUP_DIR}/${MINDUMPNAME}
 gzip -9 ${BACKUP_DIR}/${MINDUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
