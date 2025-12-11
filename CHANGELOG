@@ -1,3 +1,6 @@
+v1.5.1 20251211 JP
+  - Also apply 1.5.0 fully to the production backup
+
 v1.5.0 20251211 JP
   - Improve warehouse backups to include all the tables but exclude large table data when not desired
 

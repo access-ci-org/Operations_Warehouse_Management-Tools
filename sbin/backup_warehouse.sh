@@ -44,9 +44,9 @@ DATE=`date +'%s'`
 
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n info_django -d ${DBNAME1} \
-  --exclude-table=info_django.resource_v4_resourcev4 \
-  --exclude-table=info_django.resource_v4_resourcev4local \
-  --exclude-table=info_django.resource_v4_resourcev4relation \
+  --exclude-table-data=info_django.resource_v4_resourcev4 \
+  --exclude-table-data=info_django.resource_v4_resourcev4local \
+  --exclude-table-data=info_django.resource_v4_resourcev4relation \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
