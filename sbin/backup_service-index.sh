@@ -43,7 +43,7 @@ gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
-pg_dump -h ${DBHOST2} -U ${DBUSER2} -n public -n serviceindex -d ${DBNAME2} \
+pg_dump -h ${DBHOST2} -U ${DBUSER2} -n serviceindex_django -d ${DBNAME2} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
