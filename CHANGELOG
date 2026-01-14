@@ -1,3 +1,6 @@
+v1.7.0 20260114 JP
+  - Switch serviceindex production backup to grab cleaned up serviceindex_django schema
+
 v1.6.0 20260109 JP
   - Switch serviceindex beta backup to grab cleaned up serviceindex_django schema
 
