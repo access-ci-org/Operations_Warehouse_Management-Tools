@@ -1,3 +1,6 @@
+v1.8.0 20260407 JP
+  - Add portal1, portal_beta, portal_dev database backups
+
 v1.7.0 20260114 JP
   - Switch serviceindex production backup to grab cleaned up serviceindex_django schema
 
