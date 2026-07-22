@@ -38,10 +38,9 @@ BACKUP_DIR=${APP_HOME}/backups/${APP_NAME}
 exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1
 echo Starting at `date`
 
-DATE=`date +'%s'`
-
 ### DATABASE 1 ###
 
+DATE=`date +'%s'`
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n info_django -d ${DBNAME1} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \
@@ -52,6 +51,7 @@ gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 # Minimum backup without history for development environments
+DATE=`date +'%s'`
 MINDUMPNAME=django.${DBNAME1}.mindump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n info_django -d ${DBNAME1} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \
@@ -65,6 +65,7 @@ aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile 
 
 ### DATABASE 2 ###
 
+DATE=`date +'%s'`
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n info_django -n info -d ${DBNAME2} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \
@@ -77,6 +78,7 @@ gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 # Minimum backup without history for development environments
+DATE=`date +'%s'`
 MINDUMPNAME=django.${DBNAME2}.mindump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n info_django -n info -d ${DBNAME2} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \
@@ -90,6 +92,7 @@ aws s3 cp ${BACKUP_DIR}/${MINDUMPNAME}.gz ${S3DIR} --only-show-errors --profile 
 
 ### DATABASE 3 ###
 
+DATE=`date +'%s'`
 DUMPNAME=django.${DBNAME3}.dump.${DATE}
 pg_dump -h ${DBHOST3} -U ${DBUSER3} -n info_django -n info -d ${DBNAME3} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \
@@ -102,7 +105,7 @@ gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 # Minimum backup without history for development environments
-
+DATE=`date +'%s'`
 MINDUMPNAME=django.${DBNAME3}.mindump.${DATE}
 pg_dump -h ${DBHOST3} -U ${DBUSER3} -n info_django -n info -d ${DBNAME3} \
   --exclude-table-data=info_django.resource_v4_resourcev4 \

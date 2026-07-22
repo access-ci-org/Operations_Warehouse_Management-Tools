@@ -35,13 +35,13 @@ exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1
 echo Starting at `date`
 
 DATE=`date +'%s'`
-
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n serviceindex_django -d ${DBNAME1} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
 aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
+DATE=`date +'%s'`
 DUMPNAME=django.${DBNAME2}.dump.${DATE}
 pg_dump -h ${DBHOST2} -U ${DBUSER2} -n serviceindex_django -d ${DBNAME2} \
   >${BACKUP_DIR}/${DUMPNAME}

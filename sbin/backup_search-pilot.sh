@@ -31,7 +31,6 @@ exec 1>> ${BACKUP_DIR}/${APP_NAME}.log 2>&1
 echo Starting at `date`
 
 DATE=`date +'%s'`
-
 DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n ed_dgpf1 -d ${DBNAME1} \
   >${BACKUP_DIR}/${DUMPNAME}

@@ -1,3 +1,6 @@
+v1.9.0 20260722 JP
+  - Use a current DATE (epoc) for each database backup
+
 v1.8.0 20260407 JP
   - Add portal1, portal_beta, portal_dev database backups
 
