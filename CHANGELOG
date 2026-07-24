@@ -1,3 +1,6 @@
+v1.10.0 20260724 JP
+  - Fix s3 rm fully qualified file path and name, also which piece of the filename has the epoch
+
 v1.9.0 20260722 JP
   - Use a current DATE (epoc) for each database backup
 
