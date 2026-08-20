@@ -1,3 +1,7 @@
+v1.11.0 20260820 JP
+  - Switch to using uv
+  - New pyproject.toml for uv
+
 v1.10.0 20260724 JP
   - Fix s3 rm fully qualified file path and name, also which piece of the filename has the epoch
 

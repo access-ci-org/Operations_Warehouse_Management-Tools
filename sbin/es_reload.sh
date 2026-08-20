@@ -17,9 +17,7 @@ APP_SOURCE=${APP_HOME}/PROD
 APP_BIN=${APP_SOURCE}/bin/${APP_NAME}.py
 APP_OPTS="-c ${APP_HOME}/conf/${APP_NAME}.conf"
 
-PYTHON_BIN=python3
-export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
-source ${APP_HOME}/python/bin/activate
+PYTHON_BIN="/usr/local/bin/uv run --project ${APP_HOME} python"
 
 export PYTHONPATH=${APP_SOURCE}/lib:${WAREHOUSE_DJANGO}
 export APP_CONFIG=${APP_HOME}/conf/django_prod_router.conf

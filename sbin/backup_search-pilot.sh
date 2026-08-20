@@ -13,16 +13,9 @@ DBUSER1=ed_dgpf1user
 
 S3DIR=s3://backup.operations.access-ci.org/search-pilot.operations.access-ci.org/rds.backup/
 
-# Override in shell environment
-if [ -z "$PYTHON_BASE" ]; then
-    PYTHON_BASE=/usr
-fi
-
 ####### Everything else should be standard #######
 
-PYTHON_BIN=python3
-export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
-source ${APP_HOME}/python/bin/activate
+AWS_COMMAND="/usr/local/bin/uv run --project ${APP_HOME} aws"
 
 BACKUP_DIR=${APP_HOME}/backups/${APP_NAME}
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR}
@@ -35,14 +28,14 @@ DUMPNAME=django.${DBNAME1}.dump.${DATE}
 pg_dump -h ${DBHOST1} -U ${DBUSER1} -n ed_dgpf1 -d ${DBNAME1} \
   >${BACKUP_DIR}/${DUMPNAME}
 gzip -9 ${BACKUP_DIR}/${DUMPNAME}
-aws s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
+${AWS_COMMAND} s3 cp ${BACKUP_DIR}/${DUMPNAME}.gz ${S3DIR} --only-show-errors --profile newbackup
 
 #Cleanup backups older than 2 days
 find ${BACKUP_DIR} -mtime +2 -name \*dump\* -exec rm {} \;
 
 # Delete s3 files older than seven days
 let maxage=60*60*24*7
-aws s3 ls ${S3DIR} --profile newbackup | awk '{print $4}' | while read filename
+${AWS_COMMAND} s3 ls ${S3DIR} --profile newbackup | awk '{print $4}' | while read filename
 do
     fileepoch="$(cut -d'.' -f4 <<<"${filename}")"
     if [ -n "${fileepoch}" ] && [ "${fileepoch}" -eq "${fileepoch}" ] 2>/dev/null; then
@@ -50,7 +43,7 @@ do
         if [ "${fileage}" -gt "${maxage}" ]; then
             fqfile="${S3DIR%/}/${filename}"
             echo "s3 rm ${fqfile}"
-            aws s3 rm ${fqfile} --profile newbackup
+            ${AWS_COMMAND} s3 rm ${fqfile} --profile newbackup
         fi
     fi
 done

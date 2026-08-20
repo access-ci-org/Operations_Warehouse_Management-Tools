@@ -1,0 +1,11 @@
+[project]
+name = "Operations_Warehouse_Management-Tools"
+version = "1.0.0"
+description = "ACCESS Operations (CONECT) Warehouse Management Tools"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "boto",
+    "awscli",
+    "boto3",
+]

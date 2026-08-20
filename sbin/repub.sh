@@ -3,14 +3,7 @@
 ### RePublish Tool
 APP_HOME=%APP_HOME%
 
-# Override in shell environment
-if [ -z "$PYTHON_BASE" ]; then
-    PYTHON_BASE=%PYTHON_BASE%
-fi
-
-PYTHON_BIN=python3
-export LD_LIBRARY_PATH=${PYTHON_BASE}/lib
-source ${APP_HOME}/python/bin/activate
+PYTHON_BIN="/usr/local/bin/uv run --project ${APP_HOME} python"
 
 export PYTHONPATH=${APP_HOME}/PROS/lib:${WAREHOUSE_DJANGO}
 export DJANGO_CONF=${APP_HOME}/conf/django_prod_router.conf
